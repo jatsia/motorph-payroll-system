@@ -90,3 +90,8 @@ password: admin123
 - `Payslip`: select an employee, view the payslip, export pdf, print.
 
 The employee dropdowns in `Timecard` and `Payslip` refresh the shown records automatically.
+
+## Handoff Files
+
+- `client-handoff-summary.xlsx`: project scope, setup, and test handoff notes.
+- `unit-test-planning-summary.xlsx`: unit test planning sheet for the MotorPH submission.
