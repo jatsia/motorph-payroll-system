@@ -28,7 +28,7 @@ public class PdfReportWriter {
         return write(fileName, true, (document, cursor) -> {
             writeReportHeader(cursor, "MONTHLY PAYROLL SUMMARY REPORT");
             String[] headers = {"Emp No.", "Name", "Position", "Dept", "Gross", "SSS", "PhilHealth", "Pag-IBIG", "BIR", "Total Deductions", "Net Pay"};
-            float[] widths = {45, 100, 100, 70, 55, 48, 58, 52, 50, 80, 60};
+            float[] widths = {42, 140, 135, 90, 85, 78, 88, 78, 70, 110, 90};
             cursor.tableHeader(headers, widths);
 
             double totalGross = 0;
@@ -233,7 +233,7 @@ public class PdfReportWriter {
             for (int index = 0; index < values.length; index++) {
                 content.beginText();
                 content.newLineAtOffset(x + 3, rowY - 8);
-                content.showText(fit(values[index], Math.max(4, (int) (widths[index] / 5.2))));
+                content.showText(fit(values[index], Math.max(4, (int) (widths[index] / 4.0))));
                 content.endText();
                 x += widths[index];
             }
@@ -243,7 +243,7 @@ public class PdfReportWriter {
 
         private void newPage(PDDocument document) throws IOException {
             PDRectangle rectangle = landscape
-                    ? new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth())
+                    ? new PDRectangle(PDRectangle.A3.getHeight(), PDRectangle.A3.getWidth())
                     : PDRectangle.LETTER;
             page = new PDPage(rectangle);
             document.addPage(page);

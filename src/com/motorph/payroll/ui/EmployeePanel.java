@@ -26,9 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,24 +100,23 @@ public class EmployeePanel extends JPanel {
                 BorderFactory.createEmptyBorder(14, 14, 14, 14)
         ));
 
-        JPanel form = new JPanel(new GridBagLayout());
+        JPanel form = new JPanel(new GridLayout(0, 4, 12, 8));
         form.setOpaque(false);
 
-        int row = 0;
-        row = addField(form, row, "Employee No.", employeeIdField);
-        row = addField(form, row, "Last name", lastNameField);
-        row = addField(form, row, "First name", firstNameField);
-        row = addField(form, row, "Birthday", birthdayField);
-        row = addField(form, row, "Address", addressField);
-        row = addField(form, row, "Phone", phoneField);
-        row = addField(form, row, "Status", statusSelect);
-        row = addField(form, row, "Position", positionSelect);
-        row = addField(form, row, "Basic salary", basicSalaryField);
-        row = addField(form, row, "Rice subsidy", riceField);
-        row = addField(form, row, "Phone allowance", phoneAllowanceField);
-        row = addField(form, row, "Clothing allowance", clothingField);
-        row = addField(form, row, "Gross semi-monthly rate", grossField);
-        addField(form, row, "Hourly rate", hourlyField);
+        addField(form, "Employee No.", employeeIdField);
+        addField(form, "Last name", lastNameField);
+        addField(form, "First name", firstNameField);
+        addField(form, "Birthday", birthdayField);
+        addField(form, "Address", addressField);
+        addField(form, "Phone", phoneField);
+        addField(form, "Status", statusSelect);
+        addField(form, "Position", positionSelect);
+        addField(form, "Basic salary", basicSalaryField);
+        addField(form, "Rice subsidy", riceField);
+        addField(form, "Phone allowance", phoneAllowanceField);
+        addField(form, "Clothing allowance", clothingField);
+        addField(form, "Gross semi-monthly rate", grossField);
+        addField(form, "Hourly rate", hourlyField);
 
         JPanel hintRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         hintRow.setOpaque(false);
@@ -130,40 +127,14 @@ public class EmployeePanel extends JPanel {
         return card;
     }
 
-    private int addField(JPanel form, int row, String label, JTextField field) {
-        GridBagConstraints labelConstraints = new GridBagConstraints();
-        labelConstraints.gridx = 0;
-        labelConstraints.gridy = row;
-        labelConstraints.anchor = GridBagConstraints.WEST;
-        labelConstraints.insets = new Insets(0, 0, 8, 10);
-        form.add(new JLabel(label), labelConstraints);
-
-        GridBagConstraints fieldConstraints = new GridBagConstraints();
-        fieldConstraints.gridx = 1;
-        fieldConstraints.gridy = row;
-        fieldConstraints.weightx = 1;
-        fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        fieldConstraints.insets = new Insets(0, 0, 8, 0);
-        form.add(field, fieldConstraints);
-        return row + 1;
+    private void addField(JPanel form, String label, JTextField field) {
+        form.add(new JLabel(label));
+        form.add(field);
     }
 
-    private int addField(JPanel form, int row, String label, JComboBox<String> field) {
-        GridBagConstraints labelConstraints = new GridBagConstraints();
-        labelConstraints.gridx = 0;
-        labelConstraints.gridy = row;
-        labelConstraints.anchor = GridBagConstraints.WEST;
-        labelConstraints.insets = new Insets(0, 0, 8, 10);
-        form.add(new JLabel(label), labelConstraints);
-
-        GridBagConstraints fieldConstraints = new GridBagConstraints();
-        fieldConstraints.gridx = 1;
-        fieldConstraints.gridy = row;
-        fieldConstraints.weightx = 1;
-        fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-        fieldConstraints.insets = new Insets(0, 0, 8, 0);
-        form.add(field, fieldConstraints);
-        return row + 1;
+    private void addField(JPanel form, String label, JComboBox<String> field) {
+        form.add(new JLabel(label));
+        form.add(field);
     }
 
     private void styleFields() {
