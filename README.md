@@ -1,6 +1,6 @@
 # MotorPH Payroll System
 
-Simple Java Swing payroll system for the MotorPH case study.
+MotorPH payroll system in Java Swing with layered architecture and MySQL persistence.
 
 ## Prerequisites
 
@@ -13,18 +13,18 @@ Simple Java Swing payroll system for the MotorPH case study.
 
 The app uses MySQL through Hibernate.
 
-- Hibernate config: `resources/hibernate.cfg.xml`
-- Schema script: `database/schema.sql`
-- Seed script: `database/seed.sql`
-- Java seeder: `src/com/motorph/payroll/database/DataSeeder.java`
-
-Default local database:
-
 ```text
 database: motorph_payroll
 username: root
 password: empty
 ```
+
+Files:
+
+- Hibernate config: `resources/hibernate.cfg.xml`
+- Schema script: `database/schema.sql`
+- Seed script: `database/seed.sql`
+- Java seeder: `src/com/motorph/payroll/database/DataSeeder.java`
 
 Create and seed manually if needed:
 
@@ -33,18 +33,24 @@ mysql -u root < database/schema.sql
 mysql -u root < database/seed.sql
 ```
 
-The app also runs `DataSeeder` on startup, so missing sample data is inserted automatically.
+The app also runs `DataSeeder` on startup, so sample data is inserted automatically when missing.
 
-## Payroll Notes
+## Current Features
 
-Payslips show a simple deduction breakdown for demo purposes:
+- Login
+- Employee CRUD
+- Timecard entry and export
+- Leave requests
+- Payroll summary
+- Payslip preview and export
 
-- SSS
-- PhilHealth
-- Pag-IBIG
-- Withholding Tax
+## Reports
 
-The payroll summary displays the total deductions and net pay.
+Reports are based on the provided MotorPH sample PDFs:
+
+- employee details
+- monthly payroll summary
+- employee payslip
 
 ## Run
 
@@ -60,7 +66,7 @@ Run internal tests:
 mvn test
 ```
 
-## NetBeans
+## Setup In NetBeans
 
 1. Open NetBeans.
 2. Choose `File > Open Project`.
@@ -77,11 +83,10 @@ password: admin123
 
 ## How To Use
 
-- `Employees`: view employee list and details.
-  You can also add, edit, and delete employee records.
-- `Timecard`: select employee, add/edit attendance, save record, export PDF.
-- `Leave Requests`: submit leave requests and approve or reject selected requests.
-- `Payroll Summary`: generate summary from persisted employee data, export PDF.
-- `Payslip`: select employee, view payslip, export PDF, print.
+- `Employees`: select a row to edit, then save or delete.
+- `Timecard`: select an employee, add or edit attendance, save, export pdf.
+- `Leave Requests`: submit, approve, or reject leave requests.
+- `Payroll Summary`: generate the report from saved employee data and export pdf.
+- `Payslip`: select an employee, view the payslip, export pdf, print.
 
-Employee dropdowns in `Timecard` and `Payslip` update the displayed records automatically.
+The employee dropdowns in `Timecard` and `Payslip` refresh the shown records automatically.

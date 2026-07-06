@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -23,22 +24,27 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         setTitle("MotorPH Payroll Login");
-        setSize(420, 280);
+        setSize(500, 340);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+        setResizable(false);
 
         JLabel titleLabel = new JLabel("MotorPH Payroll System");
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(24, 28, 12, 28));
-        titleLabel.setFont(titleLabel.getFont().deriveFont(20f));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(26, 28, 10, 28));
+        titleLabel.setFont(titleLabel.getFont().deriveFont(22f));
         add(titleLabel, BorderLayout.NORTH);
 
         JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setBorder(BorderFactory.createEmptyBorder(8, 28, 24, 28));
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(8, 24, 24, 24),
+                BorderFactory.createLineBorder(new Color(229, 231, 235))
+        ));
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(6, 0, 6, 0);
+        gbc.insets = new Insets(8, 0, 8, 0);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(new JLabel("Username"), gbc);
@@ -52,8 +58,7 @@ public class LoginFrame extends JFrame {
         gbc.gridy++;
         formPanel.add(passwordField, gbc);
 
-        JButton loginButton = new JButton("Login");
-        loginButton.setText("Submit");
+        JButton loginButton = new JButton("Sign in");
         AppTheme.stylePrimaryButton(loginButton);
         loginButton.addActionListener(event -> login());
         getRootPane().setDefaultButton(loginButton);
@@ -66,8 +71,13 @@ public class LoginFrame extends JFrame {
     }
 
     private void login() {
-        String username = usernameField.getText();
+        String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword());
+
+        if (username == null || username.isBlank() || password.isBlank()) {
+            MessageDialogs.error(this, "Enter username and password.");
+            return;
+        }
 
         try {
             if (authService.login(username, password)) {

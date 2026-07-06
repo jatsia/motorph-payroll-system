@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import javax.swing.ListSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class EmployeePanel extends JPanel {
                 "Employee No.", "Name", "Position", "Department", "Status", "Basic Salary", "Gross Rate"
         );
         this.table = DataTableFactory.create(model, 95, 200, 180, 120, 120, 120, 120);
+        this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         this.pagePanel = buildPage();
 
         setLayout(new BorderLayout());
@@ -76,6 +78,11 @@ public class EmployeePanel extends JPanel {
         styleFields();
         resetForm();
         loadEmployees();
+        table.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                fillFormFromSelection();
+            }
+        });
     }
 
     private PagePanel buildPage() {
@@ -168,6 +175,9 @@ public class EmployeePanel extends JPanel {
         }
 
         pagePanel.setStatus("Loaded " + model.getRowCount() + " employees.");
+        if (model.getRowCount() > 0 && table.getSelectedRow() < 0) {
+            table.setRowSelectionInterval(0, 0);
+        }
     }
 
     private void saveEmployee() {
@@ -221,6 +231,40 @@ public class EmployeePanel extends JPanel {
         pagePanel.setStatus("Deleted employee " + employeeId + ".");
     }
 
+    private void fillFormFromSelection() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow < 0) {
+            return;
+        }
+
+        int modelRow = table.convertRowIndexToModel(selectedRow);
+        int employeeId = (Integer) model.getValueAt(modelRow, 0);
+        Employee employee = employeeRepository.findById(employeeId).orElse(null);
+        if (employee == null) {
+            return;
+        }
+
+        employeeIdField.setText(String.valueOf(employee.getEmployeeId()));
+        lastNameField.setText(employee.getLastName());
+        firstNameField.setText(employee.getFirstName());
+        birthdayField.setText(employee.getBirthday());
+        addressField.setText(employee.getAddress());
+        phoneField.setText(employee.getPhoneNumber());
+        statusSelect.setSelectedIndex(indexOfStatus(employee.getStatus()));
+        positionSelect.setSelectedIndex(indexOfPosition(employee.getPositionEntity()));
+
+        Compensation compensation = employee.getCompensation();
+        if (compensation != null) {
+            basicSalaryField.setText(String.valueOf(compensation.getBasicSalary()));
+            riceField.setText(String.valueOf(compensation.getRiceSubsidy()));
+            phoneAllowanceField.setText(String.valueOf(compensation.getPhoneAllowance()));
+            clothingField.setText(String.valueOf(compensation.getClothingAllowance()));
+            grossField.setText(String.valueOf(compensation.getGrossSemiMonthlyRate()));
+            hourlyField.setText(String.valueOf(compensation.getHourlyRate()));
+        }
+        pagePanel.setStatus("Editing employee " + employeeId + ".");
+    }
+
     private void resetForm() {
         employeeIdField.setText("");
         lastNameField.setText("");
@@ -249,6 +293,24 @@ public class EmployeePanel extends JPanel {
 
     private List<EmploymentStatus> loadStatuses() {
         return new ArrayList<>(new com.motorph.payroll.repository.RepositoryFactory().createEmploymentStatusRepository().findAll());
+    }
+
+    private int indexOfStatus(EmploymentStatus status) {
+        for (int index = 0; index < statuses.size(); index++) {
+            if (statuses.get(index).getStatusId() == status.getStatusId()) {
+                return index;
+            }
+        }
+        return 0;
+    }
+
+    private int indexOfPosition(Position position) {
+        for (int index = 0; index < positions.size(); index++) {
+            if (positions.get(index).getPositionId() == position.getPositionId()) {
+                return index;
+            }
+        }
+        return 0;
     }
 
     private double parseDouble(String value, String label) {

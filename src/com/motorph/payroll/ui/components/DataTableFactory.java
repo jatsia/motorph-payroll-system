@@ -12,6 +12,7 @@ public final class DataTableFactory {
     public static JTable create(DefaultTableModel model, int... widths) {
         JTable table = new JTable(model);
         table.setAutoCreateRowSorter(true);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setFillsViewportHeight(true);
         table.setRowHeight(30);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -34,4 +35,3 @@ public final class DataTableFactory {
         };
     }
 }
-

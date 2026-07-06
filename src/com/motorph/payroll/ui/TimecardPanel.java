@@ -29,6 +29,7 @@ import java.awt.Insets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ListSelectionModel;
 
 public class TimecardPanel extends JPanel {
     private final AttendanceRepository attendanceRepository;
@@ -59,6 +60,7 @@ public class TimecardPanel extends JPanel {
                 "Date", "Day", "Time In", "Break Out", "Break In", "Time Out", "Hours", "OT", "Remarks"
         );
         this.table = DataTableFactory.create(model, 110, 60, 90, 100, 90, 90, 70, 60, 260);
+        this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         setLayout(new BorderLayout());
 
@@ -70,6 +72,11 @@ public class TimecardPanel extends JPanel {
         employeeSelect.addActionListener(event -> {
             clearForm();
             loadTimecard();
+        });
+        table.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                fillFormFromSelection();
+            }
         });
 
         add(buildPage(), BorderLayout.CENTER);
@@ -230,6 +237,9 @@ public class TimecardPanel extends JPanel {
         }
 
         setStatus("Loaded " + records.size() + " attendance rows for " + employee.getFullName() + ".");
+        if (model.getRowCount() > 0 && table.getSelectedRow() < 0) {
+            table.setRowSelectionInterval(0, 0);
+        }
     }
 
     private void clearForm() {
