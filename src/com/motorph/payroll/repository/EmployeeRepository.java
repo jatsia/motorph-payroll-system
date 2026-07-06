@@ -9,4 +9,8 @@ public interface EmployeeRepository {
     List<Employee> findAll();
 
     Optional<Employee> findById(int employeeId);
+
+    Employee save(Employee employee);
+
+    void deleteById(int employeeId);
 }

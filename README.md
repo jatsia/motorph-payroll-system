@@ -78,6 +78,7 @@ password: admin123
 ## How To Use
 
 - `Employees`: view employee list and details.
+  You can also add, edit, and delete employee records.
 - `Timecard`: select employee, add/edit attendance, save record, export PDF.
 - `Leave Requests`: submit leave requests and approve or reject selected requests.
 - `Payroll Summary`: generate summary from persisted employee data, export PDF.

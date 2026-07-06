@@ -22,4 +22,12 @@ public class RepositoryFactory {
     public LeaveRequestRepository createLeaveRequestRepository() {
         return new HibernateLeaveRequestRepository();
     }
+
+    public PositionRepository createPositionRepository() {
+        return new HibernatePositionRepository();
+    }
+
+    public EmploymentStatusRepository createEmploymentStatusRepository() {
+        return new HibernateEmploymentStatusRepository();
+    }
 }
