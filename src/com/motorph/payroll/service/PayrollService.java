@@ -17,7 +17,17 @@ public class PayrollService {
 
     public Payslip createSamplePayslip(Employee employee) {
         PayrollResult result = payrollCalculator.calculate(employee);
-        return new Payslip(employee, "2026-01-02", "2026-01-15", result.getGrossIncome(), result.getBenefits(), result.getDeductions());
+        return new Payslip(
+                employee,
+                "2026-01-02",
+                "2026-01-15",
+                result.getGrossIncome(),
+                result.getBenefits(),
+                result.getSssDeduction(),
+                result.getPhilhealthDeduction(),
+                result.getPagibigDeduction(),
+                result.getWithholdingTax()
+        );
     }
 
     public PayrollResult calculate(Employee employee) {

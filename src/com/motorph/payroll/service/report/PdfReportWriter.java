@@ -69,7 +69,11 @@ public class PdfReportWriter {
             cursor.tableHeader(new String[]{"Section", "Amount"}, widths);
             cursor.tableRow(new String[]{"Gross Income", MoneyFormatter.format(payslip.getGrossIncome())}, widths);
             cursor.tableRow(new String[]{"Benefits", MoneyFormatter.format(payslip.getBenefits())}, widths);
-            cursor.tableRow(new String[]{"Deductions", MoneyFormatter.format(payslip.getDeductions())}, widths);
+            cursor.tableRow(new String[]{"SSS", MoneyFormatter.format(payslip.getSssDeduction())}, widths);
+            cursor.tableRow(new String[]{"PhilHealth", MoneyFormatter.format(payslip.getPhilhealthDeduction())}, widths);
+            cursor.tableRow(new String[]{"Pag-IBIG", MoneyFormatter.format(payslip.getPagibigDeduction())}, widths);
+            cursor.tableRow(new String[]{"Withholding Tax", MoneyFormatter.format(payslip.getWithholdingTax())}, widths);
+            cursor.tableRow(new String[]{"Total Deductions", MoneyFormatter.format(payslip.getDeductions())}, widths);
             cursor.tableRow(new String[]{"Take Home Pay", MoneyFormatter.format(payslip.getNetPay())}, widths);
         });
     }

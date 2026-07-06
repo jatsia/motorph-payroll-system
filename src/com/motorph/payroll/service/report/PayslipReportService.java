@@ -31,6 +31,10 @@ public class PayslipReportService {
                 Total Benefits:    %s
 
                 DEDUCTIONS
+                SSS:               %s
+                PhilHealth:        %s
+                Pag-IBIG:          %s
+                Withholding Tax:   %s
                 Total Deductions:  %s
 
                 SUMMARY
@@ -45,9 +49,12 @@ public class PayslipReportService {
                 employee.getDepartment(),
                 MoneyFormatter.format(payslip.getGrossIncome()),
                 MoneyFormatter.format(payslip.getBenefits()),
+                MoneyFormatter.format(payslip.getSssDeduction()),
+                MoneyFormatter.format(payslip.getPhilhealthDeduction()),
+                MoneyFormatter.format(payslip.getPagibigDeduction()),
+                MoneyFormatter.format(payslip.getWithholdingTax()),
                 MoneyFormatter.format(payslip.getDeductions()),
                 MoneyFormatter.format(payslip.getNetPay())
         );
     }
 }
-

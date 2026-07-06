@@ -35,6 +35,17 @@ mysql -u root < database/seed.sql
 
 The app also runs `DataSeeder` on startup, so missing sample data is inserted automatically.
 
+## Payroll Notes
+
+Payslips show a simple deduction breakdown for demo purposes:
+
+- SSS
+- PhilHealth
+- Pag-IBIG
+- Withholding Tax
+
+The payroll summary displays the total deductions and net pay.
+
 ## Run
 
 From terminal:
