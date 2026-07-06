@@ -109,3 +109,35 @@ INSERT IGNORE INTO attendance (
     (10034, '2023-12-01', 'Fri', '08:15 AM', '12:00 PM', '01:00 PM', '05:00 PM', 7.75, 0, 'Late In'),
     (10034, '2023-12-04', 'Mon', '08:00 AM', '12:00 PM', '01:00 PM', '05:00 PM', 8, 0, 'Present'),
     (10034, '2023-12-05', 'Tue', '08:00 AM', '12:00 PM', '01:00 PM', '05:00 PM', 8, 0, 'Present');
+
+INSERT INTO leave_requests (
+    employee_id,
+    start_date,
+    end_date,
+    leave_type,
+    reason,
+    status
+)
+SELECT 10005, '2026-01-20', '2026-01-21', 'Vacation Leave', 'Family commitment', 'Pending'
+WHERE NOT EXISTS (
+    SELECT 1 FROM leave_requests
+    WHERE employee_id = 10005
+    AND start_date = '2026-01-20'
+    AND end_date = '2026-01-21'
+);
+
+INSERT INTO leave_requests (
+    employee_id,
+    start_date,
+    end_date,
+    leave_type,
+    reason,
+    status
+)
+SELECT 10034, '2026-01-24', '2026-01-24', 'Sick Leave', 'Medical appointment', 'Approved'
+WHERE NOT EXISTS (
+    SELECT 1 FROM leave_requests
+    WHERE employee_id = 10034
+    AND start_date = '2026-01-24'
+    AND end_date = '2026-01-24'
+);

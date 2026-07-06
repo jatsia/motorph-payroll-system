@@ -77,6 +77,18 @@ CREATE TABLE IF NOT EXISTS attendance (
         FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 
+CREATE TABLE IF NOT EXISTS leave_requests (
+    leave_request_id INT PRIMARY KEY AUTO_INCREMENT,
+    employee_id INT NOT NULL,
+    start_date VARCHAR(20) NOT NULL,
+    end_date VARCHAR(20) NOT NULL,
+    leave_type VARCHAR(50) NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    status VARCHAR(30) NOT NULL,
+    CONSTRAINT fk_leave_requests_employee
+        FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
 CREATE TABLE IF NOT EXISTS users (
     user_id INT PRIMARY KEY,
     employee_id INT NULL,

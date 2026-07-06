@@ -54,6 +54,12 @@ From terminal:
 mvn exec:java
 ```
 
+Run internal tests:
+
+```sh
+mvn test
+```
+
 ## NetBeans
 
 1. Open NetBeans.
@@ -73,6 +79,7 @@ password: admin123
 
 - `Employees`: view employee list and details.
 - `Timecard`: select employee, add/edit attendance, save record, export PDF.
+- `Leave Requests`: submit leave requests and approve or reject selected requests.
 - `Payroll Summary`: generate summary from persisted employee data, export PDF.
 - `Payslip`: select employee, view payslip, export PDF, print.
 

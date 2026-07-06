@@ -2,6 +2,7 @@ package com.motorph.payroll.ui;
 
 import com.motorph.payroll.repository.AttendanceRepository;
 import com.motorph.payroll.repository.EmployeeRepository;
+import com.motorph.payroll.repository.LeaveRequestRepository;
 import com.motorph.payroll.repository.RepositoryFactory;
 import com.motorph.payroll.service.PayrollService;
 import com.motorph.payroll.ui.theme.AppTheme;
@@ -19,6 +20,7 @@ public class DashboardFrame extends JFrame {
         RepositoryFactory repositoryFactory = new RepositoryFactory();
         EmployeeRepository employeeRepository = repositoryFactory.createEmployeeRepository();
         AttendanceRepository attendanceRepository = repositoryFactory.createAttendanceRepository();
+        LeaveRequestRepository leaveRequestRepository = repositoryFactory.createLeaveRequestRepository();
         PayrollService payrollService = new PayrollService();
 
         setTitle("MotorPH Payroll System");
@@ -41,6 +43,7 @@ public class DashboardFrame extends JFrame {
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Employees", new EmployeePanel(employeeRepository));
         tabs.addTab("Timecard", new TimecardPanel(employeeRepository, attendanceRepository));
+        tabs.addTab("Leave Requests", new LeaveRequestPanel(employeeRepository, leaveRequestRepository));
         tabs.addTab("Payroll Summary", new PayrollSummaryPanel(employeeRepository, payrollService));
         tabs.addTab("Payslip", new PayslipPanel(employeeRepository, payrollService));
         add(tabs, BorderLayout.CENTER);

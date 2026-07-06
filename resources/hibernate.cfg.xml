@@ -19,6 +19,7 @@
         <mapping class="com.motorph.payroll.model.Compensation"/>
         <mapping class="com.motorph.payroll.model.GovernmentIds"/>
         <mapping class="com.motorph.payroll.model.AttendanceRecord"/>
+        <mapping class="com.motorph.payroll.model.LeaveRequest"/>
         <mapping class="com.motorph.payroll.model.UserAccount"/>
     </session-factory>
 </hibernate-configuration>

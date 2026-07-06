@@ -6,6 +6,7 @@ import com.motorph.payroll.model.Department;
 import com.motorph.payroll.model.Employee;
 import com.motorph.payroll.model.EmploymentStatus;
 import com.motorph.payroll.model.GovernmentIds;
+import com.motorph.payroll.model.LeaveRequest;
 import com.motorph.payroll.model.Position;
 import com.motorph.payroll.model.UserAccount;
 import org.hibernate.Session;
@@ -68,6 +69,7 @@ public class DataSeeder {
             }
 
             seedSampleTimecards(session);
+            seedLeaveRequests(session);
 
             transaction.commit();
         }
@@ -143,6 +145,37 @@ public class DataSeeder {
 
         if (count == 0) {
             session.persist(new AttendanceRecord(employee, workDate, dayName, timeIn, breakOut, breakIn, timeOut, hoursWorked, overtimeHours, remarks));
+        }
+    }
+
+    private void seedLeaveRequests(Session session) {
+        Employee hernandez = session.get(Employee.class, 10005);
+        Employee santos = session.get(Employee.class, 10034);
+
+        if (hernandez != null) {
+            addLeaveRequest(session, hernandez, "2026-01-20", "2026-01-21", "Vacation Leave", "Family commitment", "Pending");
+        }
+
+        if (santos != null) {
+            addLeaveRequest(session, santos, "2026-01-24", "2026-01-24", "Sick Leave", "Medical appointment", "Approved");
+        }
+    }
+
+    private void addLeaveRequest(Session session, Employee employee, String startDate, String endDate, String leaveType, String reason, String status) {
+        Long count = session.createQuery("""
+                        select count(lr)
+                        from LeaveRequest lr
+                        where lr.employee.employeeId = :employeeId
+                        and lr.startDate = :startDate
+                        and lr.endDate = :endDate
+                        """, Long.class)
+                .setParameter("employeeId", employee.getEmployeeId())
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .getSingleResult();
+
+        if (count == 0) {
+            session.persist(new LeaveRequest(employee, startDate, endDate, leaveType, reason, status));
         }
     }
 }

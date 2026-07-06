@@ -18,4 +18,8 @@ public class RepositoryFactory {
     public UserRepository createUserRepository() {
         return new HibernateUserRepository();
     }
+
+    public LeaveRequestRepository createLeaveRequestRepository() {
+        return new HibernateLeaveRequestRepository();
+    }
 }
