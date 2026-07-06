@@ -1,0 +1,14 @@
+category,item,details
+project,name,MotorPH Payroll System
+project,github,https://github.com/jatsia/motorph-payroll-system.git
+scope,ui,"Java Swing desktop app with login, employee management, timecard, leave requests, payroll summary, and payslip"
+scope,persistence,"MySQL database with Hibernate mappings"
+scope,reports,"Payroll summary PDF, payslip PDF, and timecard PDF export"
+scope,architecture,"Layered Java design with model, repository, service, ui, and database packages"
+tests,coverage,"mvn test passes; 9 tests passing; includes payroll, leave request, employee repository, attendance service, and pdf report checks"
+setup,prereqs,"Java 21+, Maven 3.9+, MySQL running locally"
+setup,run,"mvn exec:java"
+setup,test,"mvn test"
+setup,database,"mysql -u root < database/schema.sql; mysql -u root < database/seed.sql"
+notes,login,"default login is admin / admin123"
+notes,status,"ready for client review once the client wants the current build and report samples"
