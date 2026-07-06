@@ -43,12 +43,6 @@ From terminal:
 mvn exec:java
 ```
 
-Run tests:
-
-```sh
-mvn test
-```
-
 ## NetBeans
 
 1. Open NetBeans.
