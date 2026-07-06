@@ -10,6 +10,7 @@ import com.motorph.payroll.ui.components.DataTableFactory;
 import com.motorph.payroll.ui.components.MessageDialogs;
 import com.motorph.payroll.ui.components.PagePanel;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,11 @@ public class LeaveRequestPanel extends JPanel {
         for (Employee employee : employees) {
             employeeSelect.addItem(employee.getEmployeeId() + " - " + employee.getFullName());
         }
+        employeeSelect.setPreferredSize(new Dimension(320, 34));
+        leaveTypeSelect.setPreferredSize(new Dimension(170, 34));
+        startDateField.setPreferredSize(new Dimension(120, 34));
+        endDateField.setPreferredSize(new Dimension(120, 34));
+        reasonField.setPreferredSize(new Dimension(280, 34));
 
         ActionToolbar toolbar = new ActionToolbar();
         toolbar.addPrimaryAction("Submit Request", this::submitRequest);
@@ -66,12 +73,13 @@ public class LeaveRequestPanel extends JPanel {
     }
 
     private JPanel buildForm() {
-        JPanel form = new JPanel(new GridLayout(2, 5, 8, 8));
+        JPanel form = new JPanel(new GridLayout(2, 5, 8, 4));
         form.setOpaque(false);
+        form.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
         form.add(new JLabel("Employee"));
-        form.add(new JLabel("Start Date"));
-        form.add(new JLabel("End Date"));
-        form.add(new JLabel("Leave Type"));
+        form.add(new JLabel("Start date"));
+        form.add(new JLabel("End date"));
+        form.add(new JLabel("Type"));
         form.add(new JLabel("Reason"));
         form.add(employeeSelect);
         form.add(startDateField);

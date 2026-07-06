@@ -20,6 +20,10 @@ public class PayrollSummaryReportService {
                     employee.getPosition(),
                     employee.getDepartment(),
                     result.getGrossIncome(),
+                    result.getSssDeduction(),
+                    result.getPhilhealthDeduction(),
+                    result.getPagibigDeduction(),
+                    result.getWithholdingTax(),
                     result.getDeductions(),
                     result.getNetPay()
             ));

@@ -19,19 +19,23 @@ import java.util.List;
 
 public class PdfReportWriter {
     private static final float MARGIN = 42;
-    private static final float FONT_SIZE = 9;
+    private static final float FONT_SIZE = 8;
     private static final float HEADER_SIZE = 14;
     private static final float ROW_HEIGHT = 18;
     private static final float BOTTOM = 48;
 
     public Path writePayrollSummary(String fileName, List<PayrollSummaryRow> rows) {
-        return write(fileName, (document, cursor) -> {
+        return write(fileName, true, (document, cursor) -> {
             writeReportHeader(cursor, "MONTHLY PAYROLL SUMMARY REPORT");
-            String[] headers = {"Emp No.", "Name", "Position", "Dept", "Gross", "Deductions", "Net Pay"};
-            float[] widths = {52, 112, 118, 76, 70, 70, 70};
+            String[] headers = {"Emp No.", "Name", "Position", "Dept", "Gross", "SSS", "PhilHealth", "Pag-IBIG", "BIR", "Total Deductions", "Net Pay"};
+            float[] widths = {45, 100, 100, 70, 55, 48, 58, 52, 50, 80, 60};
             cursor.tableHeader(headers, widths);
 
             double totalGross = 0;
+            double totalSss = 0;
+            double totalPhilhealth = 0;
+            double totalPagibig = 0;
+            double totalWithholding = 0;
             double totalDeductions = 0;
             double totalNet = 0;
 
@@ -43,20 +47,28 @@ public class PdfReportWriter {
                         row.getPosition(),
                         row.getDepartment(),
                         MoneyFormatter.format(row.getGrossIncome()),
+                        MoneyFormatter.format(row.getSssDeduction()),
+                        MoneyFormatter.format(row.getPhilhealthDeduction()),
+                        MoneyFormatter.format(row.getPagibigDeduction()),
+                        MoneyFormatter.format(row.getWithholdingTax()),
                         MoneyFormatter.format(row.getDeductions()),
                         MoneyFormatter.format(row.getNetPay())
                 }, widths);
                 totalGross += row.getGrossIncome();
+                totalSss += row.getSssDeduction();
+                totalPhilhealth += row.getPhilhealthDeduction();
+                totalPagibig += row.getPagibigDeduction();
+                totalWithholding += row.getWithholdingTax();
                 totalDeductions += row.getDeductions();
                 totalNet += row.getNetPay();
             }
 
-            cursor.tableRow(new String[]{"TOTAL", "", "", "", MoneyFormatter.format(totalGross), MoneyFormatter.format(totalDeductions), MoneyFormatter.format(totalNet)}, widths);
+            cursor.tableRow(new String[]{"TOTAL", "", "", "", MoneyFormatter.format(totalGross), MoneyFormatter.format(totalSss), MoneyFormatter.format(totalPhilhealth), MoneyFormatter.format(totalPagibig), MoneyFormatter.format(totalWithholding), MoneyFormatter.format(totalDeductions), MoneyFormatter.format(totalNet)}, widths);
         });
     }
 
     public Path writePayslip(String fileName, Payslip payslip) {
-        return write(fileName, (document, cursor) -> {
+        return write(fileName, true, (document, cursor) -> {
             Employee employee = payslip.getEmployee();
             writeReportHeader(cursor, "EMPLOYEE PAYSLIP");
             cursor.line("Payslip No: " + payslip.getPayslipNumber());
@@ -79,7 +91,7 @@ public class PdfReportWriter {
     }
 
     public Path writeTimecard(String fileName, Employee employee, List<AttendanceRecord> records) {
-        return write(fileName, (document, cursor) -> {
+        return write(fileName, true, (document, cursor) -> {
             writeReportHeader(cursor, "EMPLOYEE TIMECARD");
             cursor.line("Employee: " + employee.getEmployeeId() + " - " + employee.getFullName());
             cursor.line("Position/Department: " + employee.getPosition() + " / " + employee.getDepartment());
@@ -104,7 +116,7 @@ public class PdfReportWriter {
     }
 
     public Path write(String fileName, String text) {
-        return write(fileName, (document, cursor) -> {
+        return write(fileName, false, (document, cursor) -> {
             for (String line : text.split("\\R")) {
                 cursor.ensureSpace(document, ROW_HEIGHT);
                 cursor.line(line);
@@ -112,13 +124,13 @@ public class PdfReportWriter {
         });
     }
 
-    private Path write(String fileName, PdfContentWriter writer) {
+    private Path write(String fileName, boolean landscape, PdfContentWriter writer) {
         try {
             Path exportPath = Path.of("exports", fileName);
             Files.createDirectories(exportPath.getParent());
 
             try (PDDocument document = new PDDocument()) {
-                PdfCursor cursor = new PdfCursor(document);
+                PdfCursor cursor = new PdfCursor(document, landscape);
                 writer.write(document, cursor);
                 cursor.close();
                 document.save(exportPath.toFile());
@@ -147,11 +159,13 @@ public class PdfReportWriter {
     private static class PdfCursor {
         private final PDType1Font regularFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
         private final PDType1Font boldFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
+        private final boolean landscape;
         private PDPageContentStream content;
         private PDPage page;
         private float y;
 
-        PdfCursor(PDDocument document) throws IOException {
+        PdfCursor(PDDocument document, boolean landscape) throws IOException {
+            this.landscape = landscape;
             newPage(document);
         }
 
@@ -228,7 +242,10 @@ public class PdfReportWriter {
         }
 
         private void newPage(PDDocument document) throws IOException {
-            page = new PDPage(PDRectangle.LETTER);
+            PDRectangle rectangle = landscape
+                    ? new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth())
+                    : PDRectangle.LETTER;
+            page = new PDPage(rectangle);
             document.addPage(page);
             content = new PDPageContentStream(document, page);
             y = page.getMediaBox().getHeight() - MARGIN;

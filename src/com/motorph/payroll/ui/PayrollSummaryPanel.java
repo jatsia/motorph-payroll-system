@@ -34,7 +34,7 @@ public class PayrollSummaryPanel extends JPanel {
         this.employeeRepository = employeeRepository;
         this.payrollService = payrollService;
         this.model = DataTableFactory.readOnlyModel(
-                "Employee No.", "Name", "Position", "Department", "Gross Income", "Deductions", "Net Pay"
+                "Employee No.", "Name", "Position", "Department", "Gross Income", "SSS", "PhilHealth", "Pag-IBIG", "BIR", "Total Deductions", "Net Pay"
         );
 
         setLayout(new BorderLayout());
@@ -43,7 +43,7 @@ public class PayrollSummaryPanel extends JPanel {
         toolbar.addPrimaryAction("Generate Report", this::loadSummary);
         toolbar.addSecondaryAction("Export PDF", this::exportPdf);
 
-        JTable table = DataTableFactory.create(model, 100, 220, 220, 140, 150, 150, 150);
+        JTable table = DataTableFactory.create(model, 90, 180, 160, 120, 120, 95, 110, 95, 90, 130, 120);
         this.pagePanel = new PagePanel("Payroll Summary", toolbar, new JScrollPane(table));
         add(pagePanel, BorderLayout.CENTER);
         loadSummary();
@@ -66,6 +66,10 @@ public class PayrollSummaryPanel extends JPanel {
                     employee.getPosition(),
                     employee.getDepartment(),
                     MoneyFormatter.format(result.getGrossIncome()),
+                    MoneyFormatter.format(result.getSssDeduction()),
+                    MoneyFormatter.format(result.getPhilhealthDeduction()),
+                    MoneyFormatter.format(result.getPagibigDeduction()),
+                    MoneyFormatter.format(result.getWithholdingTax()),
                     MoneyFormatter.format(result.getDeductions()),
                     MoneyFormatter.format(result.getNetPay())
             });
