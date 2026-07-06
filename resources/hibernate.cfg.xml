@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "https://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/motorph_payroll?createDatabaseIfNotExist=true&amp;serverTimezone=Asia/Manila</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <mapping class="com.motorph.payroll.model.Department"/>
+        <mapping class="com.motorph.payroll.model.Position"/>
+        <mapping class="com.motorph.payroll.model.EmploymentStatus"/>
+        <mapping class="com.motorph.payroll.model.Employee"/>
+        <mapping class="com.motorph.payroll.model.Compensation"/>
+        <mapping class="com.motorph.payroll.model.GovernmentIds"/>
+        <mapping class="com.motorph.payroll.model.AttendanceRecord"/>
+        <mapping class="com.motorph.payroll.model.UserAccount"/>
+    </session-factory>
+</hibernate-configuration>

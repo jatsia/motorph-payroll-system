@@ -1,0 +1,10 @@
+out/
+target/
+exports/
+*.class
+*.db
+*.sqlite
+*.sqlite3
+.DS_Store
+AGENTS.md
+docs/
